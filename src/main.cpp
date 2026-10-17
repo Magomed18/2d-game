@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Plot.h"
+#include "InventoryBarUI.h"
+#include "Item.h"
 
 #include <algorithm>
 #include <array>
@@ -63,30 +65,19 @@ int main()
     const float maxY = std::max(0.f, windowHeight - characterSize.y);
     character.setPosition({maxX / 2.f, maxY / 2.f});
 
-    sf::Sprite inventoryBar(inventoryTexture);
-    bool inventoryBarVisible = false;
+    std::array<Item, 5> items{};
 
-    // Display only the part of the texture containing the bar.
-    inventoryBar.setTextureRect(
-        sf::IntRect({186, 207}, {457, 95})
-    );
+    items[0] = Item{
+        "Carrot seed",
+        5,
+        imageDirectory / "items/crop_seeds/carrot_seed.png"
+    };
 
-    const auto barSize = inventoryBar.getLocalBounds().size;
-
-    // Display the visible bar at 500ixels wide.
-    const float scale = 500 / barSize.x;
-    inventoryBar.setScale({scale, scale});
-
-    // Anchor the bottom-center of the visible bar.
-    inventoryBar.setOrigin({
-        barSize.x / 2.f,
-        barSize.y
-    });
-
-    inventoryBar.setPosition({
-        windowWidth / 2.f,
-        static_cast<float>(windowHeight)
-    });
+    InventoryBarUI inventoryUI(
+    inventoryTexture,
+    {windowWidth / 2.f, static_cast<float>(windowHeight)},
+    500.f
+);
 
 
     constexpr float movementSpeed = 220.f; // Pixels per second.
@@ -128,7 +119,7 @@ int main()
                 }
                 if (key->code == sf::Keyboard::Key::Q)
                 {
-                    inventoryBarVisible = !inventoryBarVisible;
+                    inventoryUI.toggleVisibility();
                 }
                 if (key->code == sf::Keyboard::Key::Escape)
                 {
@@ -185,10 +176,7 @@ int main()
                 window.draw(plot.vegetable);
         }
         window.draw(character);  // Draw the character on top.
-        if (inventoryBarVisible)
-        {
-            window.draw(inventoryBar); // Draw the inventory bar on top of everything.
-        }
+        inventoryUI.draw(window, items);
         window.display();
     }
 }

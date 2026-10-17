@@ -12,7 +12,7 @@ class Inventory{
         void draw(sf::RenderWindow& window);
 
     private:
-        std::array<Item, 5> items;
+        std::array<Item, 5>;
         sf::Sprite inventoryBar;
         sf::Texture inventoryBarTexture;
 }

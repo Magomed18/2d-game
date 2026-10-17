@@ -1,21 +1,30 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <filesystem>
+#include <memory>
 #include <string>
 
 class Item
 {
 public:
-    Item();
+    Item() = default;
+
+    Item(std::string name, int quantity,
+         const std::filesystem::path& iconPath);
+
     int getQuantity() const;
-    std::string getName() const;
-    void update();
-    void draw(sf::RenderWindow& window);
+    const std::string& getName() const;
+
+    // void addQuantity(int amount);
+    // bool removeQuantity(int amount);
+
+    void draw(sf::RenderWindow& window,
+              sf::Vector2f slotCenter,
+              sf::Vector2f availableSize) const;
 
 private:
     std::string name;
-    int quantity;
-
-    sf::Sprite sprite;
-    sf::Texture texture;
+    int quantity = 0;
+    std::shared_ptr<sf::Texture> texture;
 };
