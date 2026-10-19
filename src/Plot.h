@@ -9,20 +9,12 @@ enum class PlotState
     Planted
 };
 
-enum class VegetableType
-{
-    None,
-    Carrot,
-    Potato,
-    Tomato
-};
 
 struct Plot
 {
     // Each Plot instance has its own rectangle, state, and vegetable.
     sf::RectangleShape rectangle;
     PlotState state = PlotState::Untouched;
-    VegetableType vegetableType = VegetableType::None;
     sf::CircleShape vegetable{32.f};
 
     Plot(sf::Vector2f position, sf::Vector2f size) : rectangle(size)

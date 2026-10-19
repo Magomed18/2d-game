@@ -16,6 +16,7 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(main
     src/main.cpp
+    src/Game.cpp
     src/Item.cpp
     src/InventoryBarUI.cpp
 )
@@ -25,4 +26,3 @@ target_compile_definitions(main PRIVATE GARDEN_IMAGE_DIR="${CMAKE_CURRENT_SOURCE
 # target_compile_definitions(main PRIVATE GARDEN_ITEM="${CMAKE_CURRENT_SOURCE_DIR}/images\items\crop_seeds")
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)
-    

@@ -50,7 +50,7 @@ void Item::draw(sf::RenderWindow& window,
         availableSize.x <= 0.f || availableSize.y <= 0.f)
         return;
 
-    sf::Sprite icon(*texture);
+
     const auto imageSize = texture->getSize();
 
     // Fit inside the slot while preserving the image's proportions.
@@ -64,6 +64,8 @@ void Item::draw(sf::RenderWindow& window,
     // Position the middle of the icon at the middle of the slot.
     icon.setOrigin({imageSize.x / 2.f, imageSize.y / 2.f});
     icon.setPosition(slotCenter);
+   
 
     window.draw(icon);
+    window.draw(text);
 }
