@@ -22,6 +22,7 @@ public:
               const std::array<Item, 5>& items) const;
 
 private:
+    sf::Font textFont;
     sf::Sprite bar;
     bool visible = false;
 

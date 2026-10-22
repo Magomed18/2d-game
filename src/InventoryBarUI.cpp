@@ -21,6 +21,8 @@ InventoryBarUI::InventoryBarUI(const sf::Texture& texture,
     bar.setScale({scale, scale});
     bar.setOrigin({size.x / 2.f, size.y});
     bar.setPosition(bottomCenter);
+
+    textFont.openFromFile("assets/fonts/arial.ttf");
 }
 
 void InventoryBarUI::toggleVisibility()
@@ -55,6 +57,6 @@ void InventoryBarUI::draw(sf::RenderWindow& window,
 
     for (std::size_t i = 0; i < items.size(); ++i)
     {
-        items[i].draw(window, getSlotCenter(i), availableIconSize);
+        items[i].draw(window, getSlotCenter(i), availableIconSize, textFont);
     }
 }

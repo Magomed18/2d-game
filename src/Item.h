@@ -21,9 +21,11 @@ public:
 
     void draw(sf::RenderWindow& window,
               sf::Vector2f slotCenter,
-              sf::Vector2f availableSize) const;
+              sf::Vector2f availableSize,
+              sf::Font& textFont) const;
 
 private:
+    
     std::string name;
     int quantity = 0;
     std::shared_ptr<sf::Texture> texture;
