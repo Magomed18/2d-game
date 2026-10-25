@@ -16,7 +16,7 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(main
     src/main.cpp
-    src/Game.cpp
+    src/Game.cpp                                                  
     src/Item.cpp
     src/InventoryBarUI.cpp
 )

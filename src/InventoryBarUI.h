@@ -3,7 +3,7 @@
 #include "Item.h"
 
 #include <SFML/Graphics.hpp>
-#include <array>
+#include <array>         
 #include <cstddef>
 
 class InventoryBarUI
@@ -11,18 +11,21 @@ class InventoryBarUI
 public:
     InventoryBarUI(const sf::Texture& texture,
                    sf::Vector2f bottomCenter,
-                   float displayedWidth = 500.f);
+                   float displayedWidth);
 
     void toggleVisibility();
     void setPosition(sf::Vector2f bottomCenter);
 
     sf::Vector2f getSlotCenter(std::size_t index) const;
 
+    // void draw(sf::RenderWindow& window,
+    //           const std::array<Item, 5>& items, const sf::Font& textFont, sf::Vector2f slotCenter, sf::Vector2f availableSize) const;
+    
     void draw(sf::RenderWindow& window,
-              const std::array<Item, 5>& items) const;
+          const std::array<Item, 5>& items,
+          const sf::Font& textFont) const;
 
 private:
-    sf::Font textFont;
     sf::Sprite bar;
     bool visible = false;
 

@@ -20,8 +20,8 @@ struct Plot
     Plot(sf::Vector2f position, sf::Vector2f size) : rectangle(size)
     {
         rectangle.setPosition(position);
-        rectangle.setFillColor(sf::Color(100, 150, 60));
-        rectangle.setOutlineColor(sf::Color::Yellow);
+        // rectangle.setFillColor(sf::Color(100, 150, 60));
+        // rectangle.setOutlineColor(sf::Color::Yellow);
         rectangle.setOutlineThickness(2.f);
 
         vegetable.setFillColor(sf::Color::Green);

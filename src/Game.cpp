@@ -14,6 +14,7 @@ Game::Game()
       inventoryTexture(imageDirectory / "inventory-bar.png"),
       background(backgroundTexture),
       character(characterTexture),
+      textFont(imageDirectory / "fonts/Roboto-Italic-VariableFont_wdth,wght.ttf"),
       inventoryUI(
           inventoryTexture,
           {windowWidth / 2.f, static_cast<float>(windowHeight)},
@@ -183,7 +184,7 @@ void Game::render()
     }
 
     window.draw(character);
-    inventoryUI.draw(window, items);
+    inventoryUI.draw(window, items, textFont);
     window.display();
 }
 

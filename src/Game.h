@@ -29,13 +29,15 @@ private:
     sf::RenderWindow window;
     sf::Clock frameClock;
 
-    // Textures must outlive the sprites using them.
+
     sf::Texture backgroundTexture;
     sf::Texture characterTexture;
     sf::Texture inventoryTexture;
 
     sf::Sprite background;
     sf::Sprite character;
+
+    sf::Font textFont;
 
     std::array<Plot, 2> plots{
         Plot{{100.f, 325.f}, {158.f, 159.f}},

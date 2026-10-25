@@ -15,14 +15,15 @@ public:
 
     int getQuantity() const;
     const std::string& getName() const;
+    const sf::Texture* getTexture() const;
 
     // void addQuantity(int amount);
     // bool removeQuantity(int amount);
 
-    void draw(sf::RenderWindow& window,
-              sf::Vector2f slotCenter,
-              sf::Vector2f availableSize,
-              sf::Font& textFont) const;
+    // void draw(sf::RenderWindow& window,
+    //           sf::Vector2f slotCenter,
+    //           sf::Vector2f availableSize,
+    //           const sf::Font& textFont) const;
 
 private:
     
