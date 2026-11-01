@@ -30,25 +30,28 @@ const sf::Texture* Item::getTexture() const
 
 
 
-// void Item::addQuantity(int amount)
-// {
-//     if (amount <= 0)
-//         return;
+int Item::addQuantity(int amount)
+{
+    if (amount <= 0)
+        return 0;
 
-//     if (amount > std::numeric_limits<int>::max() - quantity)
-//         return;
+    if (amount > std::numeric_limits<int>::max() - quantity)
+        return 0;
 
-//     quantity += amount;
-// }
+    quantity += amount;
+    return amount;
+}
 
-// bool Item::removeQuantity(int amount)
-// {
-//     if (amount <= 0 || amount > quantity)
-//         return false;
+int Item::removeQuantity(int amount)
+{
+    if (amount <= 0 || amount > quantity)
+        return 0;
 
-//     quantity -= amount;
-//     return true;
-// }
+    quantity -= amount;
+    return amount;
+}
+    
+
 
 // void Item::draw(sf::RenderWindow& window,
 //                 sf::Vector2f slotCenter,

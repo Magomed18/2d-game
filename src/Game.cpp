@@ -120,8 +120,14 @@ void Game::interactWithPlot()
         if (plot.state == PlotState::Untouched)
             plot.state = PlotState::Prepared;
         else if (plot.state == PlotState::Prepared)
-            plot.state = PlotState::Planted;
+            if (items[0].getQuantity() >= 1)
+                {
+                    items[0].removeQuantity(1);
+                    plot.state = PlotState::Planted;
+                }
 
+        // else if (plot.state == PlotState::Planted)
+        //     plot.state = PlotState::Ready;
         break;
     }
 }

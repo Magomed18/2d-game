@@ -40,9 +40,8 @@ private:
     sf::Font textFont;
 
     std::array<Plot, 2> plots{
-        Plot{{100.f, 325.f}, {158.f, 159.f}},
-        Plot{{1077.f, 332.f}, {138.f, 148.f}}
-    };
+        Plot{{100.f, 325.f}, {158.f, 159.f}, imageDirectory / "crops/carrot/seeds.png", 0.0},
+        Plot{{1077.f, 332.f}, {138.f, 148.f}, imageDirectory / "crops/carrot/seeds.png", 0.0}};
 
     std::array<Item, 5> items{};
     InventoryBarUI inventoryUI;

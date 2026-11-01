@@ -17,13 +17,9 @@ public:
     const std::string& getName() const;
     const sf::Texture* getTexture() const;
 
-    // void addQuantity(int amount);
-    // bool removeQuantity(int amount);
+    int addQuantity(int amount);
+    int removeQuantity(int amount);
 
-    // void draw(sf::RenderWindow& window,
-    //           sf::Vector2f slotCenter,
-    //           sf::Vector2f availableSize,
-    //           const sf::Font& textFont) const;
 
 private:
     
