@@ -37,3 +37,4 @@ struct Plot
         vegetable.setPosition(position + size / 2.f);
     }
 };
+// Hello!
