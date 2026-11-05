@@ -14,6 +14,8 @@ Game::Game()
       inventoryTexture(imageDirectory / "inventory-bar.png"),
       background(backgroundTexture),
       character(characterTexture),
+      sprout(imageDirectory / "crops/carrot/sprout.png"),
+      grown(imageDirectory / "crops/carrot/grown.png"),
       textFont(imageDirectory / "fonts/Roboto-Italic-VariableFont_wdth,wght.ttf"),
       inventoryUI(
           inventoryTexture,
@@ -122,15 +124,23 @@ void Game::interactWithPlot()
         else if (plot.state == PlotState::Prepared)
             if (items[0].getQuantity() >= 1)
                 {
-                    items[0].removeQuantity(1);
                     plot.state = PlotState::Planted;
-                }
+                    items[0].removeQuantity(1);
+                    plot.growthProgress = 0.0;
+                    
+                }            
 
-        // else if (plot.state == PlotState::Planted)
-        //     plot.state = PlotState::Ready;
+        // else if (plot.state == PlotState::Ready){
+        //     plot.state = PlotState::Harvested;
+        //     items[1].addQuantity(1);
+    
+
         break;
-    }
+        }
+
+        
 }
+
 
 void Game::update(float deltaTime)
 {
@@ -169,6 +179,17 @@ void Game::update(float deltaTime)
     position.y = std::clamp(position.y, 0.f, maxY);
 
     character.setPosition(position);
+
+    //Plot time logic
+    for (auto& plot : plots){
+        if (plot.state == PlotState::Planted){
+            plot.growthProgress += deltaTime;
+            if (plot.growthProgress == 10.0){
+                plot.state = PlotState::Ready;
+
+            }
+        }
+    }
 }
 
 void Game::render()
@@ -187,6 +208,16 @@ void Game::render()
 
         if (plot.state == PlotState::Planted)
             window.draw(plot.vegetable);
+            if (plot.growthProgress >= 5.0 && plot.growthProgress < 10.0){
+                plot.vegetable.setTexture(sprout);
+                window.draw(plot.vegetable);
+            }
+            else if (plot.growthProgress >= 10.0){
+                plot.vegetable.setTexture(grown);
+                window.draw(plot.vegetable);
+                plot.state = PlotState::Ready;
+            }
+            
     }
 
     window.draw(character);

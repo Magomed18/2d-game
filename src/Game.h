@@ -33,6 +33,8 @@ private:
     sf::Texture backgroundTexture;
     sf::Texture characterTexture;
     sf::Texture inventoryTexture;
+    sf::Texture sprout;
+    sf::Texture grown;
 
     sf::Sprite background;
     sf::Sprite character;
