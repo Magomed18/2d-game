@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 Game::Game()
     : window(
@@ -119,20 +120,31 @@ void Game::interactWithPlot()
         if (!plot.rectangle.getGlobalBounds().contains(feet))
             continue;
 
-        if (plot.state == PlotState::Untouched)
+        else if (plot.state == PlotState::Untouched){
             plot.state = PlotState::Prepared;
-        else if (plot.state == PlotState::Prepared)
-            if (items[0].getQuantity() >= 1)
-                {
+            std::cout << "The plot is set to Prepared" << std::endl;
+        }
+        else if (plot.state == PlotState::Prepared){
+            if (items[0].getQuantity() >= 1){
+                
                     plot.state = PlotState::Planted;
+                    std::cout << "The plot is set to Planted" << std::endl;
                     items[0].removeQuantity(1);
                     plot.growthProgress = 0.0;
                     
-                }            
+            }   
+        }                 
 
-        // else if (plot.state == PlotState::Ready){
-        //     plot.state = PlotState::Harvested;
-        //     items[1].addQuantity(1);
+        else if (plot.state == PlotState::Ready){
+            std::cout << "The plot is set to Ready" << std::endl;
+            plot.state = PlotState::Harvested;
+            std::cout << "The plot is set to Harvested" << std::endl;
+            // items[1].addQuantity(1);
+            plot.state = PlotState::Untouched;
+            std::cout << "The plot is set back to Untouched" << std::endl;
+            plot.growthProgress = 0.0;
+            plot.vegetable.setTexture(plot.texture);
+        }    
     
 
         break;
@@ -184,7 +196,7 @@ void Game::update(float deltaTime)
     for (auto& plot : plots){
         if (plot.state == PlotState::Planted){
             plot.growthProgress += deltaTime;
-            if (plot.growthProgress == 10.0){
+            if (plot.growthProgress >= 10.0){
                 plot.state = PlotState::Ready;
 
             }
@@ -197,6 +209,7 @@ void Game::render()
     window.clear();
     window.draw(background);
 
+    // Plot rendering loop
     for (auto& plot : plots)
     {
         if (plot.state == PlotState::Untouched)
@@ -212,11 +225,12 @@ void Game::render()
                 plot.vegetable.setTexture(sprout);
                 window.draw(plot.vegetable);
             }
-            else if (plot.growthProgress >= 10.0){
+            else if (plot.state == PlotState::Ready){
                 plot.vegetable.setTexture(grown);
                 window.draw(plot.vegetable);
-                plot.state = PlotState::Ready;
+                
             }
+
             
     }
 
