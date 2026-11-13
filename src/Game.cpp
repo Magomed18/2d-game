@@ -117,34 +117,45 @@ void Game::interactWithPlot()
 
     for (auto& plot : plots)
     {
-        if (!plot.rectangle.getGlobalBounds().contains(feet))
+        // if (!plot.rectangle.getGlobalBounds().contains(feet))
+        //     continue;
+
+
+        if (!plot.contains(feet))
+        {
             continue;
-
-        else if (plot.state == PlotState::Untouched){
-            plot.state = PlotState::Prepared;
-            std::cout << "The plot is set to Prepared" << std::endl;
         }
-        else if (plot.state == PlotState::Prepared){
-            if (items[0].getQuantity() >= 1){
-                
-                    plot.state = PlotState::Planted;
-                    std::cout << "The plot is set to Planted" << std::endl;
-                    items[0].removeQuantity(1);
-                    plot.growthProgress = 0.0;
-                    
-            }   
-        }                 
 
-        else if (plot.state == PlotState::Ready){
-            std::cout << "The plot is set to Ready" << std::endl;
-            plot.state = PlotState::Harvested;
-            std::cout << "The plot is set to Harvested" << std::endl;
-            // items[1].addQuantity(1);
-            plot.state = PlotState::Untouched;
-            std::cout << "The plot is set back to Untouched" << std::endl;
-            plot.growthProgress = 0.0;
-            plot.vegetable.setTexture(plot.texture);
-        }    
+        else if (plot.prepared())
+        {
+            // Prepared; planting waits for the next interaction.
+        }
+    
+
+        else if (items[0].getQuantity() > 0 && plot.planted(imageDirctory / "crops/carrot/sprout.png"))
+        {
+            items[0].removeQuantity(1);
+
+            if (plot.harvested)
+            {
+            items[1].addQuantity(1);
+            }
+            
+        }
+
+
+        
+        
+
+        // else if (plot.state == PlotState::Ready){
+        //     std::cout << "The plot is set to Ready" << std::endl;
+        //     plot.harvest();
+        //     std::cout << "The plot is set to Harvested" << std::endl;
+        //     // items[1].addQuantity(1);
+        //     std::cout << "The plot is set back to Untouched" << std::endl;
+        //     // plot.growthProgress = 0.0;
+        //     // plot.vegetable.setTexture(plot.texture);
+        // }    
     
 
         break;
@@ -193,14 +204,9 @@ void Game::update(float deltaTime)
     character.setPosition(position);
 
     //Plot time logic
-    for (auto& plot : plots){
-        if (plot.state == PlotState::Planted){
-            plot.growthProgress += deltaTime;
-            if (plot.growthProgress >= 10.0){
-                plot.state = PlotState::Ready;
-
-            }
-        }
+    for (auto& plot : plots)
+    {
+        plot.update(deltaTime);
     }
 }
 
@@ -212,12 +218,9 @@ void Game::render()
     // Plot rendering loop
     for (auto& plot : plots)
     {
-        if (plot.state == PlotState::Untouched)
-            plot.rectangle.setFillColor(sf::Color(100, 150, 60));
-        else
-            plot.rectangle.setFillColor(sf::Color(110, 75, 45));
+        
 
-        window.draw(plot.rectangle);
+        plot.draw(window, cr);
 
         if (plot.state == PlotState::Planted)
             window.draw(plot.vegetable);
