@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <optional>
+#include <iostream>
 
 enum class CropType{
 	None,
@@ -44,5 +45,6 @@ struct Crop
     bool isReady() const
     {
         return age >= growthDuration;
+        std::cout << "Crop is ready for harvest!" << std::endl;
     }
 };

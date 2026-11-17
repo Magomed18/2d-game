@@ -41,11 +41,12 @@ class Plot
             return rectangle.getGlobalBounds().contains(feet);
         }
 
-        bool prepared()
+        bool prepare()
         {
             if (state != PlotState::Untouched)
                 return false;
 
+            rectangle.setFillColor(sf::Color(110, 75, 45));
             state = PlotState::Prepared;
             return true;
         }
@@ -74,33 +75,20 @@ class Plot
 
             crop->update(deltaTime);
 
-            if (crop->isReady())
-                state = PlotState::Ready;
         }
 
-        bool harvested()
+        bool harvest()
         {
-            if (state != PlotState::Ready || !crop)
+            if (!crop || !crop->isReady() )
                 return false;
 
             crop.reset();
-            state = PlotState::Harvested;
-            reset();
-            return true;
-        }
-
-        void reset()
-        {
-            
             state = PlotState::Untouched;
+            return true;
         }
 
         void draw(sf::RenderWindow& window) const
         {
-            if (state == PlotState::Untouched)
-                rectangle.setFillColor(sf::Color(100, 150, 60));
-            else
-                rectangle.setFillColor(sf::Color(110, 75, 45));
 
             window.draw(rectangle);
 

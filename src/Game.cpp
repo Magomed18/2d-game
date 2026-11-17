@@ -126,23 +126,27 @@ void Game::interactWithPlot()
             continue;
         }
 
-        else if (plot.prepared())
+        else if (plot.prepare())
         {
             // Prepared; planting waits for the next interaction.
         }
     
 
-        else if (items[0].getQuantity() > 0 && plot.planted(imageDirctory / "crops/carrot/sprout.png"))
+        else if (items[0].getQuantity() > 0 && plot.plant(imageDirectory / "crops/carrot/sprout.png"))
         {
             items[0].removeQuantity(1);
 
-            if (plot.harvested)
+            if (plot.harvest())
             {
             items[1].addQuantity(1);
             }
             
         }
 
+        else if (plot.harvest())
+            {
+            items[1].addQuantity(1);
+            }
 
         
         
@@ -220,19 +224,7 @@ void Game::render()
     {
         
 
-        plot.draw(window, cr);
-
-        if (plot.state == PlotState::Planted)
-            window.draw(plot.vegetable);
-            if (plot.growthProgress >= 5.0 && plot.growthProgress < 10.0){
-                plot.vegetable.setTexture(sprout);
-                window.draw(plot.vegetable);
-            }
-            else if (plot.state == PlotState::Ready){
-                plot.vegetable.setTexture(grown);
-                window.draw(plot.vegetable);
-                
-            }
+        plot.draw(window);
 
             
     }

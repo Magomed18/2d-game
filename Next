@@ -1,2 +1,1 @@
-1. Track down plots positioning and its method invoke order starting from InteractWithPlot method.
-2. Redo plot rendering.
+1. Crop stage logic and selection
