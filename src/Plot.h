@@ -52,12 +52,12 @@ class Plot
         }
 
 
-        bool plant(const std::filesystem::path& imagePath)
+        bool plant(const std::filesystem::path& seedPath, const std::filesystem::path& sproutPath, const std::filesystem::path& grownPath, float growthDuration, CropType type)
         {
             if (state != PlotState::Prepared || crop.has_value())
                 return false;
 
-            crop.emplace(imagePath, 10.f, CropType::Carrot);
+            crop.emplace(seedPath, sproutPath, grownPath, growthDuration, type);
 
             const auto center =
                 rectangle.getPosition() + rectangle.getSize() / 2.f;
@@ -67,6 +67,20 @@ class Plot
             state = PlotState::Planted;
             return true;
         }
+        // {
+        //     if (state != PlotState::Prepared || crop.has_value())
+        //         return false;
+
+        //     crop.emplace(imagePath, 10.f, CropType::Carrot);
+
+        //     const auto center =
+        //         rectangle.getPosition() + rectangle.getSize() / 2.f;
+
+        //     crop->crop_image.setPosition(center);
+
+        //     state = PlotState::Planted;
+        //     return true;
+        // }
 
         void update(float deltaTime)
         {
@@ -75,11 +89,13 @@ class Plot
 
             crop->update(deltaTime);
 
+            
+
         }
 
         bool harvest()
         {
-            if (!crop || !crop->isReady() )
+            if (!crop || crop->getStage() != GrowthStage::Grown)
                 return false;
 
             crop.reset();
@@ -92,8 +108,10 @@ class Plot
 
             window.draw(rectangle);
 
-            if (crop)
-                window.draw(crop->crop_image);
+            if (!crop)
+                return;
+            
+            window.draw(crop->crop_image);
         }
 
 

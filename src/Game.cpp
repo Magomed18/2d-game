@@ -4,6 +4,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
+#include <string>
 
 Game::Game()
     : window(
@@ -18,6 +19,8 @@ Game::Game()
       sprout(imageDirectory / "crops/carrot/sprout.png"),
       grown(imageDirectory / "crops/carrot/grown.png"),
       textFont(imageDirectory / "fonts/Roboto-Italic-VariableFont_wdth,wght.ttf"),
+      goalText(textFont, "Goal: Harvest 5 carrots - 0", 24),
+      completionText(textFont, "Congratulations! You have completed the goal.", 50),
       inventoryUI(
           inventoryTexture,
           {windowWidth / 2.f, static_cast<float>(windowHeight)},
@@ -26,6 +29,16 @@ Game::Game()
 {
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(false);
+
+    // Prepare the goal text.
+    goalText.setFillColor(sf::Color::White);
+    goalText.setOutlineColor(sf::Color::Black);
+    goalText.setOutlineThickness(1.f);
+
+    // Prepare the completion text.
+    completionText.setFillColor(sf::Color::White);
+    completionText.setOutlineColor(sf::Color::Black);
+    completionText.setOutlineThickness(1.f);
 
     // Prepare the character image.
     sf::Image characterImage(imageDirectory / "character.png");
@@ -67,6 +80,8 @@ Game::Game()
         5,
         imageDirectory / "items/crop_seeds/carrot_seed.png"
     };
+
+    items[1] = Item{"Carrot", 0, imageDirectory / "crops/carrot/grown.png"};
 }
     void Game::run()
 {
@@ -132,20 +147,21 @@ void Game::interactWithPlot()
         }
     
 
-        else if (items[0].getQuantity() > 0 && plot.plant(imageDirectory / "crops/carrot/sprout.png"))
+        else if (items[0].getQuantity() > 0 && plot.plant(imageDirectory / "crops/carrot/seeds.png", imageDirectory / "crops/carrot/sprout.png", imageDirectory / "crops/carrot/grown.png", 10.f, CropType::Carrot))
         {
             items[0].removeQuantity(1);
 
-            if (plot.harvest())
-            {
-            items[1].addQuantity(1);
-            }
+        
             
         }
 
         else if (plot.harvest())
             {
+    
+
             items[1].addQuantity(1);
+            ++harvestedCarrots;
+            
             }
 
         
@@ -231,6 +247,37 @@ void Game::render()
 
     window.draw(character);
     inventoryUI.draw(window, items, textFont);
+
+    goalText.setString(
+        "Goal: Harvest 5 carrots - " + std::to_string(harvestedCarrots)
+    );
+
+    const auto goalBounds = goalText.getLocalBounds();
+    goalText.setOrigin({
+        goalBounds.position.x + goalBounds.size.x,
+        goalBounds.position.y
+    });
+    goalText.setPosition({
+        static_cast<float>(window.getSize().x) - 20.f,
+        20.f
+    });
+
+    if (harvestedCarrots >= 5)
+    {
+        const auto completionBounds = completionText.getLocalBounds();
+        completionText.setOrigin({
+            completionBounds.position.x + completionBounds.size.x / 2.f,
+            completionBounds.position.y + completionBounds.size.y / 2.f
+        });
+        completionText.setPosition({
+            static_cast<float>(window.getSize().x) / 2.f,
+            static_cast<float>(window.getSize().y) / 2.f
+        });
+
+        window.draw(completionText);
+    }
+    window.draw(goalText);
+
     window.display();
 }
 

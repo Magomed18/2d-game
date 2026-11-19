@@ -13,21 +13,32 @@ enum class CropType{
 	Potato
 };
 
+enum class GrowthStage
+{
+    Seed,
+    Sprout,
+    Grown
+};
+
 
 
 struct Crop
 {
 
-    CropType type = CropType::None;
     float age = 0.f;
     float growthDuration;
-	sf::Texture texture;
+    CropType type = CropType::None;
+    sf::Texture seedTexture;
+    sf::Texture sproutTexture;
+    sf::Texture grownTexture;
     sf::Sprite crop_image;
 
-	Crop(const std::filesystem::path& iconPath,  float duration, CropType type)
+	Crop(const std::filesystem::path& seedPath, const std::filesystem::path& sproutPath, const std::filesystem::path& grownPath, float duration, CropType type)
     : growthDuration(duration),
-      texture(iconPath),
-      crop_image(texture),
+      seedTexture(seedPath),
+      sproutTexture(sproutPath),
+      grownTexture(grownPath),
+      crop_image(seedTexture),
       type(type)
 {
     const auto bounds = crop_image.getLocalBounds();
@@ -40,11 +51,38 @@ struct Crop
     void update(float deltaTime)
     {
         age += deltaTime;
+        const auto stage = getStage();
+
+        if (stage == GrowthStage::Seed)
+        {
+            crop_image.setTexture(seedTexture);
+        }
+        else if (stage == GrowthStage::Sprout)
+        {
+            crop_image.setTexture(sproutTexture);
+        }
+        else if (stage == GrowthStage::Grown)
+        {
+            crop_image.setTexture(grownTexture);
+        }
     }
 
-    bool isReady() const
+    // bool isReady() const
+    // {
+    //     return age >= growthDuration;
+    //     std::cout << "Crop is ready for harvest!" << std::endl;
+    // }
+
+
+    GrowthStage getStage() const
     {
-        return age >= growthDuration;
-        std::cout << "Crop is ready for harvest!" << std::endl;
+        if (age >= growthDuration)
+            return GrowthStage::Grown;
+
+        if (age >= growthDuration / 2.f)
+            return GrowthStage::Sprout;
+
+        return GrowthStage::Seed;
     }
+
 };

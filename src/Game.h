@@ -41,6 +41,9 @@ private:
     sf::Sprite character;
 
     sf::Font textFont;
+    sf::Text goalText;
+    sf::Text completionText;
+    int harvestedCarrots = 0;
 
    std::array<Plot, 2> plots{
     Plot{{100.f, 325.f}, {158.f, 159.f}},
